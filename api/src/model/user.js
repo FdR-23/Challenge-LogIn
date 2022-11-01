@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
+const { Schema, model } = mongoose;
 const bcrypt = require('bcrypt-nodejs')
-const { Schema, } = mongoose;
+const salt = 10;
 
 
 const userSchema = new Schema({
+    userName: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
@@ -11,14 +16,36 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
+    },
+    role: [{
+        ref: 'Role',
+        type: Schema.Types.ObjectId
+    }],
+    date: {
+        type: Date,
+        default: Date.now,
     }
 })
 
-userSchema.method.encrypPassword = async function(password)  {
-   return  await bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-}
-userSchema.method.comparePassword = async function (password)  {
-    return await bcrypt.compareSync(password, this.password)
-}
+//el objetivo es asegurarse de que la contraseña siempre esté encriptada antes de guardar
+userSchema.pre(save, function (next) {
+    if (!this.isModified('password'))
+        return next();
+    bcrypt.hash(this.password, salt, (error, passwordHash) => {
+        if (error) {
+            return next(error);
+        } else
+            this.password = passwordHash;
+        next();
+    });
+});
 
-module.exports = mongoose.model('users', userSchema)
+UserSchema.methods.comparePassword = function (password, cb) {
+    bcrypt.compare(password, this.password, function (err, isMatch) {
+        if (err)
+            return cb(err);
+        cb(null, isMatch);
+    });
+};
+
+module.exports = model('user', userSchema)
