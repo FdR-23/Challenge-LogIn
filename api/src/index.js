@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 3005;
 //Initialitation
 const app = express()
 require('./db.js')
-
+//metodo para entender los obj json
+app.use(express.json())
 
 
 //middlewares

@@ -3,6 +3,16 @@ const router = express.Router();
 
 const authCtrl = require('../controllers/auth.controller.js')
 
+const clientRoutes = require('./client.routes.js')
+
+//CRUD CLIENT
+
+router.use('/client', clientRoutes)
+
+
+
+
+
 router.post('/signup', authCtrl.signUp)
 
 router.post('/signin', authCtrl.signIn)

@@ -48,4 +48,4 @@ UserSchema.methods.comparePassword = function (password, cb) {
     });
 };
 
-module.exports = model('user', userSchema)
+module.exports = model('users', userSchema)
