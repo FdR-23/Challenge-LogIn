@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-const roleScrema = new Schema(
+const roleSchema = new Schema(
     {
         name: String
     },
     {
-        versionkey: fase
+        versionKey: false
     }
 )
 
-export default model('Role', roleScrema)
+
+module.exports = model ('Role', roleSchema)

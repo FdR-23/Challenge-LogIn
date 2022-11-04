@@ -5,17 +5,20 @@ const authCtrl = require('../controllers/auth.controller.js')
 
 const clientRoutes = require('./client.routes.js')
 
-//CRUD CLIENT
 
+
+//CRUD CLIENT
 router.use('/client', clientRoutes)
 
 
 
 
-
+//REGISTER
 router.post('/signup', authCtrl.signUp)
+//LOGIN
+router.post('/login', authCtrl.logIn)
 
-router.post('/signin', authCtrl.signIn)
+
 
 router.get('/', (req, res) => {
   res.send('Hello World!')

@@ -4,9 +4,16 @@ const morgan = require('morgan');
 
 const PORT = process.env.PORT || 3005;
 
+//import roles
+const { createRoles, createAdmin } = require('../src/lib/initialSetup.js')
+
+
 //Initialitation
 const app = express()
+createRoles();
+createAdmin();
 require('./db.js')
+
 //metodo para entender los obj json
 app.use(express.json())
 
@@ -15,7 +22,7 @@ app.use(express.json())
 app.use(morgan('dev'));
 
 //metodo que sirve recibir los datos desde el cliente 
-app.use(express.urlencoded({ extended: true, limit: '50mb'  }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 //Routes
 const routes = require("./routes/index.js");
 app.use("/", routes);

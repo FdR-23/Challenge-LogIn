@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 const bcrypt = require('bcrypt-nodejs')
-const salt = 10;
+const SALT_WORK_FACTOR = 10;
 
 
 const userSchema = new Schema({
-    userName: {
+    username: {
         type: String,
+        unique: true,
         required: true,
     },
     email: {
@@ -17,30 +18,41 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    role: [{
+    role: {
         ref: 'Role',
-        type: Schema.Types.ObjectId
-    }],
-    date: {
-        type: Date,
-        default: Date.now,
-    }
+        type: Schema.Types.String
+    },
+}, {
+    timestamps: true,
+    versionKey: false
 })
 
+
 //el objetivo es asegurarse de que la contraseña siempre esté encriptada antes de guardar
-userSchema.pre(save, function (next) {
-    if (!this.isModified('password'))
-        return next();
-    bcrypt.hash(this.password, salt, (error, passwordHash) => {
-        if (error) {
-            return next(error);
-        } else
-            this.password = passwordHash;
-        next();
+userSchema.pre('save', function (next) {
+    const user = this;
+        if(!user.isModified('password'))
+    return next();
+    // generate a salt
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err)
+            return next(err);
+        // hash the password using our new salt
+        bcrypt.hash(user.password, salt, null, function (err, hashPassword) {
+            if (err)
+                return next(err);
+            // override the cleartext password with the hashed one
+            user.password = hashPassword;
+            next();
+        });
     });
+
+
 });
 
-UserSchema.methods.comparePassword = function (password, cb) {
+
+
+userSchema.methods.comparePassword = function (password, cb) {
     bcrypt.compare(password, this.password, function (err, isMatch) {
         if (err)
             return cb(err);
@@ -48,4 +60,4 @@ UserSchema.methods.comparePassword = function (password, cb) {
     });
 };
 
-module.exports = model('users', userSchema)
+module.exports = model('User', userSchema)
