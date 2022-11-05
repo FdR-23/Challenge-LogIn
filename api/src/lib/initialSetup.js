@@ -28,7 +28,7 @@ const createAdmin = async () => {
         }
 
         const newUser = await userSchema({
-            username: 'Admin',
+            username: 'admin',
             email: 'admin@admin.com',
             password: 'admin123',
             role: 'admin'

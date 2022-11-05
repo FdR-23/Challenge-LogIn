@@ -3,8 +3,9 @@ const clientSchema = require('../../model/client')
 
 const deletClient = async (req, res) => {
     const{clientId} = req.params
-    const deletclient = await clientSchema.findOneAndDelete(clientId)
     try {
+    const deletclient = await clientSchema.findOneAndDelete(clientId)
+   
         res
             .status(201)
             .json(`customer successfully deleted`)
