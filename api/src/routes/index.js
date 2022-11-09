@@ -3,23 +3,18 @@ const router = express.Router();
 
 const authCtrl = require('../controllers/auth.controller.js')
 const veryToken = require('../middleware/authorization.js')
-const isAdmin = require('../middleware/isAdmin.js')
 const clientRoutes = require('./client.routes.js')
 
 
-
 //CRUD CLIENT
-router.use('/client', clientRoutes)
-
-
+router.use('/client', veryToken, clientRoutes)
 
 
 //REGISTER
 router.post('/signup', authCtrl.signUp)
 
 //LOGIN
-router.post('/login',  authCtrl.logIn)
-
+router.post('/login', authCtrl.logIn)
 
 
 router.get('/', (req, res) => {

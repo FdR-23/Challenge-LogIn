@@ -33,41 +33,37 @@ const signUp = async (req, res) => {
 
 
 const logIn = async (req, res) => {
-    const { email, username, password } = req.body
+    const { userOrEmail, password } = req.body
     try {
-
-
-        if (!email && !username) {
+        if (!userOrEmail) {
             return res
-                .status(400)
+                .status(401)
                 .json({ message: "Please send your username or email" });
         } else if (!password) {
             return res
-                .status(400)
+                .status(401)
                 .json({ message: "Please send your password" });
         }
 
-        const userFound = await userSchema.findOne({ email: email }) || await userSchema.findOne({ username: username })
+        const userFound = await userSchema.findOne({ email: userOrEmail }) || await userSchema.findOne({ username: userOrEmail })
 
         if (!userFound) {
             return res
-                .status(400)
+                .status(401)
                 .json({ message: "User not found" })
         }
         const isMatch = await userFound.comparePassword(password, userFound.password);
-
         if (!isMatch) {
             return res
-                .status(400)
-                .json('Invalid password')
+                .status(401)
+                .json({ message: 'Invalid password' })
         }
-
         const token = jwt.sign({ id: userFound._id }, JWTSECRET, {
             expiresIn: 86400 //24 hours
         })
         res
-        .status(200)
-        .json({ token })
+            .status(200)
+            .json({ token })
     } catch (error) {
         res
             .status(400)

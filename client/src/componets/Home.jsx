@@ -1,9 +1,24 @@
 import React from 'react'
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const home = () => {
+
+const Home = () => {
+    const navigate = useNavigate()
+    const loggerUserJSON = window.localStorage.getItem("Token");
+    const Token = JSON.parse(loggerUserJSON)
+
+
+    if (!Token) {
+        return navigate('*')
+    }
+
+
     return (
-        <div>home</div>
+        <div>
+hola
+        </div>
     )
 }
 
-export default home
+export default Home

@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require('express')
 const morgan = require('morgan');
+const cors = require ('cors')
 
 const PORT = process.env.PORT || 3005;
-
 //import roles
 const { createRoles, createAdmin } = require('../src/lib/initialSetup.js')
 
@@ -17,6 +17,8 @@ require('./db.js')
 //metodo para entender los obj json
 app.use(express.json())
 
+//cors
+app.use(cors());
 
 //middlewares
 app.use(morgan('dev'));
