@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
 import Validate from './Validate.js'
 
+import axios from "axios";
 
 
 const RegisterUser = () => {
 
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [input, setInput] = useState({
     username: '',
@@ -29,18 +29,27 @@ const RegisterUser = () => {
       ...input,
       [e.target.name]: e.target.value
     }))
-    console.log(input.username.length)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (Object.keys(errors).length !== 0) {
       alert('There are still errors, " Please try again "')
     } else {
-    
 
-
-      
+      const form = await Register(input)
+      if (form.status === 200) {
+        alert(form.data.message)
+        setInput({
+          username: '',
+          email: '',
+          password: '',
+          repeatPassword: ''
+        });
+        navigate('/')
+      } else {
+        return alert("Error: " + form.status + " " + form.data.message)
+      }
     }
   }
 
@@ -95,10 +104,12 @@ const RegisterUser = () => {
 
 
         <button type="submit">Register</button>
-        <button onClick={() => navigate('/')}>Cancel</button>
 
-
+      <button onClick={() => navigate("/")}>Cancel</button>
       </form>
+
+
+
 
 
 
@@ -107,3 +118,18 @@ const RegisterUser = () => {
 }
 
 export default RegisterUser
+
+
+//mover a redux esto 
+export const Register = async (form) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:3004/signup",
+      form
+    );
+    return response;
+
+  } catch (err) {
+    return err.response;
+  }
+};

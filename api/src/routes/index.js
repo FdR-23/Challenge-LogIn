@@ -17,9 +17,7 @@ router.post('/signup', authCtrl.signUp)
 router.post('/login', authCtrl.logIn)
 
 
-router.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+
 
 
 module.exports = router;

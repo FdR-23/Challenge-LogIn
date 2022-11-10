@@ -13,6 +13,12 @@ const signUp = async (req, res) => {
             email: email.toLowerCase().trim(),
             password: password,
         })
+        const foundEmail = await userSchema.findOne({ email: email })
+        if (foundEmail) {
+          return  res
+                .status(400)
+                .json({ message: 'E-mail already registered' })
+        }
         if (!role) {
             const foundRole = await roleSchema.findOne({ name: 'user' })
             newUser.role = foundRole.name
@@ -21,12 +27,12 @@ const signUp = async (req, res) => {
 
         res
             .status(200)
-            .json({ token });
+            .json({ message: 'User successfully registered' });
 
     } catch (error) {
         res
             .status(400)
-            .json(error)
+            .json({ message: 'Failure to register user' })
     }
 }
 
@@ -66,8 +72,8 @@ const logIn = async (req, res) => {
             .json({ token })
     } catch (error) {
         res
-            .status(400)
-            .json(error)
+            .status(500)
+            .json({ message: "Internal Server Error" })
     }
 }
 

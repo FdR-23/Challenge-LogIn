@@ -4,13 +4,12 @@ import axios from "axios";
 import ValidateLogin from './ValidateLogin.js'
 
 const Login = () => {
+    const navigate = useNavigate()
     const [errors, setErrors] = useState({})
     const [input, setInput] = useState({
         userOrEmail: '',
         password: '',
     });
-
-    const navigate = useNavigate()
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -33,12 +32,14 @@ const Login = () => {
         } else {
             const data = await logIn(input);
             if (data) {
-                if (data.status === 401) {
-                    alert(data.data.message)
-                } else {
-                    console.log(data.data.token)
+                if (data.status === 200) {
                     window.localStorage.setItem("Token", JSON.stringify(data.data));
                     navigate('/main')
+                } else if (data.status === 401) {
+                    // alert("Error: " + data.status + " " + data.data.message)
+                    alert('The password or email are invalid.')
+                } else {
+                    alert("Error: " + data.status + " " + data.data.message)
                 }
             }
         }
