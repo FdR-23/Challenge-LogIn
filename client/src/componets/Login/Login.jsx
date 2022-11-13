@@ -50,7 +50,7 @@ const Login = () => {
 
 
     return (
-        <div className='w-screen h-screen m-auto flex flex-col justify-center items-center'>
+        <div className='w-full h-screen  flex flex-col justify-center items-center'>
 
 
             <div className='flex flex-col w-80 bg-slate-50   shadow-black shadow-lg  rounded-xl'>
