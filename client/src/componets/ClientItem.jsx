@@ -5,7 +5,7 @@ function ClientItem({ client }) {
     const { name, lastName, age, gender } = client
 
     return (
-        <div className='grid grid-cols-8 gap-1 my-2  bg-stone-50/50 p-1 rounded-sm'>
+        <div className='grid grid-cols-8 gap-1 my-2 mx-2 bg-stone-50/50 p-1 rounded-sm'>
             <div className='flex items-center justify-center font-alumni text-2xl text-slate-800'># </div>
             <div className=' flex items-center justify-center col-span-2 overflow-auto font-semibold'>{name}</div>
             <div className=' flex items-center justify-center  overflow-auto font-semibold'>{lastName}</div>

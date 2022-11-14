@@ -10,7 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @apply  h-screen  max-w-screen-lg  m-auto p-0
+  @apply  h-screen  max-w-screen-xl  m-auto 
 }
 
 html {

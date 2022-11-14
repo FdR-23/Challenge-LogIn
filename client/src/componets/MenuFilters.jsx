@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 
 
 
-function MenuFilters() {
+function MenuFilters({ toggleopen }) {
 
     const [name, setName] = useState('');
     const [inputAge, setInputAge] = useState({
@@ -56,61 +56,90 @@ function MenuFilters() {
 
     return (
         <div
-            className='bg-red-400  flex flex-col'>MenuFIlters
-
+            className={`${toggleopen ? '' : 'hidden sm:flex'} h-full w-60 flex flex-col  items-center p-2 rounded-sm bg-slate-900/20`}>
+            <p
+                className='p-2 font-semibold'>MenuFilters</p>
             <div
-                className='bg-red-400  flex flex-row'>
-
-                <p>ORDER BY:</p>
+                className=' bg-white/50 p-2 rounded-lg'>
                 <div>
+
+                </div>
+                <div
+                    className='p-2 m-2'>
                     <p
-                        onClick={() => handleFilterAscDes('ASC')}
-                    >A-Z</p>
+                        className='text-center font-semibold'>ORDER BY</p>
+                    <div
+                        className='p-2 flex flex-row justify-evenly'>
+                        <p
+                            className='btn btn-xs  bg-indigo-400  hover:bg-indigo-600'
+                            onClick={() => handleFilterAscDes('ASC')}
+                        >A-Z</p>
+                        <p
+                            className='btn btn-xs bg-indigo-400 hover:bg-indigo-600'
+                            onClick={() => handleFilterAscDes('DES')}
+                        >Z-A</p>
+                    </div>
+                </div>
+
+                <div
+                    className='p-2 m-2'>
                     <p
-                        onClick={() => handleFilterAscDes('DES')}
-                    >Z-A</p>
+                        className='text-center font-semibold'
+                    >SEARCH  BY RANGE AGE</p>
+                    <form
+                        className='p-2 flex flex-row justify-evenly'
+                        onSubmit={(e) => handleSubmitRangeAge(e)}>
+                        <input
+                            className="input input-bordered input-xs w-12  max-w-xs"
+                            type="text"
+                            name='to'
+                            value={inputAge.to}
+                            placeholder='min'
+                            onChange={(e) => handleChangeRangeAge(e)}
+                        />
+                        <input
+                            className="input input-bordered input-xs w-12  max-w-xs"
+                            type="text"
+                            name='from'
+                            value={inputAge.from}
+                            placeholder='max'
+                            onChange={(e) => handleChangeRangeAge(e)}
+                        />
+                        <button
+                            className='btn btn-xs  bg-indigo-400  hover:bg-indigo-600'
+                            type="submit">go</button>
+                    </form>
+                </div>
+
+                <div
+                    className='p-2 m-2'>
+                    <p
+                        className='text-center font-semibold'
+                    >SEARCH BY NAME</p>
+
+                    <form
+                        className='p-2 flex flex-row justify-evenly'
+                        onSubmit={(e) => handleSubmitSearchByName(e)}>
+
+                        <input
+                            className="input input-bordered input-xs  w-28 max-w-xs"
+                            type="text"
+                            name='name'
+                            value={name}
+                            placeholder='Name'
+                            autoComplete='off'
+                            onChange={(e) => handleChangeName(e)}
+                        />
+                        <button
+                            className='btn btn-xs  bg-indigo-400  hover:bg-indigo-600'
+                            type="submit">go</button>
+
+
+                    </form>
                 </div>
             </div>
 
-            <div>
-                <p>SEARCH  BY RANGE AGE</p>
-                <form
-                    onSubmit={(e) => handleSubmitRangeAge(e)}>
-                    <input
-                        type="text"
-                        name='to'
-                        value={inputAge.to}
-                        placeholder='min'
-                        onChange={(e) => handleChangeRangeAge(e)}
-                    />
-                    <input
-                        type="text"
-                        name='from'
-                        value={inputAge.from}
-                        placeholder='max'
-                        onChange={(e) => handleChangeRangeAge(e)}
-                    />
-                    <button type="submit">SEARCH</button>
-                </form>
-            </div>
 
-            <div>
-                <p>SEARCH BY NAME</p>
-                <form
-                    onSubmit={(e) => handleSubmitSearchByName(e)}>
-                    <input
-                        type="text"
-                        name='name'
-                        value={name}
-                        placeholder='Name'
-                        autoComplete='off'
-                        onChange={(e) => handleChangeName(e)}
-                    />
-                    <button type="submit">SEARCH</button>
-
-
-                </form>
-            </div>
         </div>
     )
 }

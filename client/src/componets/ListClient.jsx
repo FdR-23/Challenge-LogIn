@@ -28,8 +28,8 @@ function ListClient() {
 
 
     return (
-        <div className='bg-slate-900/10 rounded-sm w-full h-full my-2 p-2'>
-            <div className='grid grid-cols-8 border-b-2 border-stone-700 text-center font-semibold text-sm'>
+        <div className='bg-slate-900/10 rounded-sm w-full h-full  '>
+            <div className='grid grid-cols-8 border-b-2 mx-2 pt-2 border-stone-700 text-center font-semibold text-sm'>
                 <p className="mb-1"># </p>
                 <p className="mb-1 col-span-2">Name</p>
                 <p className="mb-1">Last Name</p>
@@ -39,7 +39,6 @@ function ListClient() {
                 <p className="mb-1">Remove</p></div>
 
             {users && users.map((element) =>
-            
                     <ClientItem
                         key={element._id}
                         client={element} />)
