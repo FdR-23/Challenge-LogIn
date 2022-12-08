@@ -17,8 +17,5 @@ const modClient = async (req, res) => {
     }
 
 }
-
-
-
 module.exports = modClient;
 

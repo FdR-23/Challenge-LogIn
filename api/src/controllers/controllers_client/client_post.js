@@ -5,18 +5,22 @@ const newClient = async (req, res) => {
 
     try {
         const client = clientSchema({
-            name,
-            lastName,
-            age,
+            name: name.trim().charAt(0).toUpperCase() + name.slice(1),
+            lastName: lastName.trim().charAt(0).toUpperCase() + lastName.slice(1),
+            age: age.trim(),
             gender,
             addres
         });
 
         await client.save();
-        res.status(201).json(client);
+        res
+        .status(201)
+        .json(client);
 
     } catch (error) {
-        res.status(401).json(error)
+        res
+        .status(401)
+        .json({message: `Error registering client`})
     }
 }
 

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const userSchema = require('../model/user.js')
 const JWTSECRET = process.env.JWTSECRET;
 
-const veryToken = async (req, res, next) => {
+const verySession = async (req, res, next) => {
 
     const token = req.headers['access-token']
     try {
@@ -18,12 +18,14 @@ const veryToken = async (req, res, next) => {
                 .status(404)
                 .json({ message: 'User not found' })
         }
+        res
+        .status(200)
+        .json({ message: 'Authorized' })
         next()
     } catch (error) {
         return res
             .status(401)
             .json({ message: 'Unauthorized' })
-
     }
 }
-module.exports = veryToken;
+module.exports = verySession;

@@ -19,6 +19,7 @@ const signUp = async (req, res) => {
                 .status(400)
                 .json({ message: 'E-mail already registered' })
         }
+        
         if (!role) {
             const foundRole = await roleSchema.findOne({ name: 'user' })
             newUser.role = foundRole.name
