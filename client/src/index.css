@@ -10,9 +10,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @apply  h-screen  max-w-screen-xl  m-auto 
+  @apply  max-w-screen-xl  m-auto 
 }
 
 html {
-  @apply bg-gradient-to-tr from-cyan-500 to-indigo-800
+  @apply bg-gradient-to-tr from-cyan-500 to-indigo-800 
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-
+import { Link } from 'react-router-dom';
 
 import RegisterClient from './RegisterClient/RegisterClient';
 
@@ -24,14 +24,14 @@ function Navbar() {
                 Clientes
             </p>
 
-
-            <RegisterClient />
+            <Link  to = '/main/register'> ADD client</Link>
+         
 
 
             <div className="dropdown dropdown-content">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                     <div className="w-10 rounded-full">
-                        <img src="https://placeimg.com/80/80/people" alt='img-profile'/>
+                        <img src="https://placeimg.com/80/80/people" alt='img-profile' />
                     </div>
                 </label>
                 <ul className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">

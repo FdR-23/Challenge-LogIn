@@ -3,6 +3,12 @@ const validateForm = (input) => {
 
     const error = {}
 
+    const Expresionletter = new RegExp('^[A-Z]+$', 'i');
+    const ExpresionNumber = new RegExp ('^[0-9]+$', 'i');
+
+
+
+   
     //USERNAME OR E-MAIL
     if (!input.userOrEmail) {
         error.userOrEmail = 'Username or E-mail is required'

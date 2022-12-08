@@ -3,28 +3,27 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from "axios";
 import ClientItem from './ClientItem';
+import { useDispatch, useSelector } from 'react-redux';
 
-
-
+import { getAllClient } from '../redux/actions';
 
 
 function ListClient() {
+    const dispatch = useDispatch()
+    const clients = useSelector((state) => state.clients)
 
-    const navigate = useNavigate()
-    const [users, setUsers] = useState()
 
 
+    
     useEffect(() => {
         const loggerUserJSON = window.localStorage.getItem("Token");
         if (loggerUserJSON !== null) {
             const { token } = JSON.parse(loggerUserJSON)
-            getAllUser(token).then(res => setUsers(res))
+            dispatch(getAllClient(token))
         } else {
-            console.log("No existe")
-            return navigate('*')
-
+            return alert('Error to laod clients')
         }
-    }, [navigate]);
+    }, []);
 
 
     return (
@@ -38,10 +37,10 @@ function ListClient() {
                 <p className="mb-1">Edit</p>
                 <p className="mb-1">Remove</p></div>
 
-            {users && users.map((element) =>
-                    <ClientItem
-                        key={element._id}
-                        client={element} />)
+            {clients && clients.map((element) =>
+                <ClientItem
+                    key={element._id}
+                    client={element} />)
             }
         </div >
     )

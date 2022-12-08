@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from "axios";
 import ValidateLogin from './ValidateLogin.js'
+import { logIn } from '../../redux/actions/index.js';
 
 const Login = () => {
+
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
     const [input, setInput] = useState({
@@ -45,6 +46,7 @@ const Login = () => {
                     alert("Error: " + data.status + " " + data.data.message)
                 }
             }
+
         }
     }
 
@@ -131,17 +133,3 @@ const Login = () => {
 export default Login
 
 
-
-//mover a redux esto 
-export const logIn = async (credentials) => {
-    try {
-        const response = await axios.post(
-            "http://localhost:3004/login",
-            credentials
-        );
-        return response;
-
-    } catch (err) {
-        return err.response;
-    }
-};

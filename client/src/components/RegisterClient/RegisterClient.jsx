@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
-
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState, useEffect } from 'react'
+import ValidateRegister from './ValidateRegisterClient.js'
 import axios from "axios";
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { useSelector } from 'react-redux';
+import { statusSession } from '../../redux/actions/index.js';
 
 
 function RegisterClient() {
-    const navigate = useNavigate();
-    const [errors, setErrors] = useState({});
+    const navigate = useNavigate()
+    const params = useParams();
+    const clients = useSelector((state) => state.clients)
 
+    const [loading, setLoading] = useState(true)
+    const [errors, setErrors] = useState({});
     const [input, setInput] = useState({
         name: '',
         lastName: '',
@@ -16,12 +21,49 @@ function RegisterClient() {
         gender: '',
     });
 
+
+    useEffect(() => {
+        const loggerUserJSON = window.localStorage.getItem("Token");
+        const session = async (loggerUserJSON) => {
+            if (loggerUserJSON === null) {
+                return navigate('*')
+            } else {
+                const { token } = JSON.parse(loggerUserJSON)
+                const data = await statusSession(token)
+                if (data) {
+                    if (data.status === 200) {
+                        return setLoading(false)
+                    } else if (data.status === 404 | 401) {
+                        console.log(data)
+                        alert("Error: " + data.status + " " + data.data.message)
+                        navigate('*')
+                    }
+                } else {
+                    navigate('*')
+                }
+            }
+        }
+        session(loggerUserJSON)
+    }, [navigate])
+
+
+    useEffect(() => {
+        if (params.id) {
+            setInput(clients.find(element => element._id === params.id))
+        }
+    }, [params.id, clients]);
+
+
     const handleChange = (e) => {
-        e.preventDefault();
         setInput({
             ...input,
             [e.target.name]: e.target.value,
         })
+
+        setErrors(ValidateRegister({
+            ...input,
+            [e.target.name]: e.target.value
+        }))
     }
 
     const handleSelect = (e) => {
@@ -30,34 +72,56 @@ function RegisterClient() {
             ...input,
             gender: e.target.value,
         })
+        setErrors(ValidateRegister({
+            ...input,
+            gender: e.target.value,
+        }))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        const loggerUserJSON = window.localStorage.getItem("Token");
+        const { token } = JSON.parse(loggerUserJSON)
         if (Object.keys(errors).length !== 0) {
             alert('There are still errors, " Please try again "')
-        } else {
-            const loggerUserJSON = window.localStorage.getItem("Token");
-            const { token } = JSON.parse(loggerUserJSON)
+        }
+        if (params.id) {
+            const clientModified = await Update(params.id, input, token)
+            if (clientModified.status === 201) {
+                alert('Successfuly Modified')
+                navigate("/main")
+            } else if (clientModified.status === 403 | 401) {
+                alert("Error: " + clientModified.status + " " + clientModified.data.message)
+            }
+        }
+        else {
             const form = await Register(input, token)
-            console.log(form)
-
+            if (form) {
+                if (form.status === 201) {
+                    alert('Successfuly Registration')
+                    navigate("/main")
+                } else if (form.status === 401) {
+                    alert('there was an error in registration, please try again.')
+                } else {
+                    alert("Error: " + form.status + " " + form.data.message)
+                }
+            }
+            console.log('form de registro', form)
         }
     }
 
-
-
-    return (
-        <div>
-            <a href='#modal-AddClient' className='btn'>Add New Client</a>
-            <div className="modal" id="modal-AddClient">
+    
+    if (loading) {
+        return <p>error</p>
+    } else
+        return (
+            <div className='h-screen flex flex-row justify-center items-center'>
                 <div className="modal-box w-fit flex flex-col items-center shadow-black shadow-lg">
-
+                    <a href='/main' className="btn btn-sm btn-circle absolute right-2 top-2">✕</a>
                     <h2 className='mx-2 p-4 text-2xl font-medium  text-center'>REGISTER CLIENT</h2>
                     <form
                         className=' p-4 m-auto items-center rounded-xl'
                         onSubmit={(e) => handleSubmit(e)}>
-
                         <div>
                             <input
                                 className={errors.name ?
@@ -68,17 +132,16 @@ function RegisterClient() {
                                 value={input.name}
                                 placeholder='Name'
                                 onChange={(e) => handleChange(e)}
-                                autoFocus
-                            />
-
+                                required
+                                autoFocus />
                         </div>
                         <div
-                            className={errors.username ? 'block py-2' : 'block py-2'}>
-                            <span className='px-1  text-red-600 text-sm'> {errors.username}</span>
+                            className={errors.name ? 'block py-2' : 'block py-2'}>
+                            <span className='px-1  text-red-600 text-sm'> {errors.name}</span>
                         </div>
-
                         <div>
                             <input
+
                                 className={errors.lastName ?
                                     'px-2 input input-error input-sm  w-full max-w-xs' :
                                     'px-2 input input-bordered input-sm w-full max-w-xs'}
@@ -87,14 +150,13 @@ function RegisterClient() {
                                 value={input.lastName}
                                 placeholder='Last Name'
                                 onChange={(e) => handleChange(e)}
+                                required
                             />
                         </div>
                         <div
                             className={errors.lastName ? 'block py-2' : 'block py-2'}>
-                            <span className='px-1  text-red-600 text-sm'> {errors.email}</span>
+                            <span className='px-1  text-red-600 text-sm'> {errors.lastName}</span>
                         </div>
-
-
                         <div>
                             <input
                                 className={errors.age ?
@@ -105,42 +167,38 @@ function RegisterClient() {
                                 value={input.age}
                                 placeholder='Age'
                                 onChange={(e) => handleChange(e)}
+                                required
                             />
                         </div>
                         <div
                             className={errors.age ? 'block py-2' : 'block py-2'}>
-                            <span className='px-1  text-red-600 text-sm'> {errors.password}</span>
+                            <span className='px-1  text-red-600 text-sm'> {errors.age}</span>
                         </div>
-
-
                         <div>
                             <select
-                                defaultValue={'X'}
+
                                 className={errors.gender ?
                                     'px-2 input input-error input-sm  w-full max-w-xs' :
                                     'px-2 input input-bordered input-sm w-full max-w-xs'}
                                 onChange={(e) => handleSelect(e)}>
                                 <option
-                                    value="X"
-                                    disabled >Gender</option>
+                                    value="Gender" hidden >Gender</option>
                                 <option
-                                    value='Male'
-                                >Male</option>
+                                    value='Male'>Male</option>
                                 <option
-                                    value='Female'
-                                >Female</option>
+                                    value='Female'>Female</option>
                                 <option
-                                    value='X'
-                                >X</option>
+                                    value='X'>X</option>
                             </select>
                         </div>
                         <div
-                            className={errors.repeatPassword ? 'block py-2' : 'block py-2'}>
-                            <span className='px-1  text-red-600 text-sm'> {errors.repeatPassword}</span>
+                            className={errors.gender ? 'block py-2' : 'block py-2'}>
+                            <span className='px-1  text-red-600 text-sm'> {errors.gender}</span>
                         </div>
 
 
                         <button
+                            href="#"
                             className={Object.keys(errors).length !== 0 ?
                                 'btn btn-wide bg-red-700 hover:bg-red-600' :
                                 'btn btn-wide bg-green-500 hover:bg-green-600'}
@@ -152,9 +210,9 @@ function RegisterClient() {
                 </div>
             </div>
 
-        </div>
-    )
+        )
 }
+
 
 export default RegisterClient
 
@@ -174,6 +232,22 @@ export const Register = async (form, token) => {
         );
         return response;
 
+    } catch (err) {
+        return err.response;
+    }
+};
+export const Update = async (id, form, token) => {
+    const config = {
+        headers: {
+            'access-token': `${token}`,
+        },
+    };
+    try {
+        const response = await axios.put(
+            `http://localhost:3004/client/${id}`,
+            form, config
+        );
+        return response;
     } catch (err) {
         return err.response;
     }

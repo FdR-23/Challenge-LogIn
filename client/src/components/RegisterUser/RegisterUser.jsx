@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Validate from './Validate.js'
 
-import axios from "axios";
+import { registerUser } from '../../redux/actions/index.js';
 
 
 const RegisterUser = () => {
@@ -41,7 +41,7 @@ const RegisterUser = () => {
       alert('There are still errors, " Please try again "')
     } else {
 
-      const form = await Register(input)
+      const form = await registerUser(input)
       if (form.status === 200) {
         alert(form.data.message)
         setInput({
@@ -165,16 +165,3 @@ const RegisterUser = () => {
 export default RegisterUser
 
 
-//mover a redux esto 
-export const Register = async (form) => {
-  try {
-    const response = await axios.post(
-      "http://localhost:3004/signup",
-      form
-    );
-    return response;
-
-  } catch (err) {
-    return err.response;
-  }
-};

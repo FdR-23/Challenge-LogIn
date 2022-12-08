@@ -51,14 +51,11 @@ function MenuFilters({ toggleopen }) {
         })
     }
 
-
-
-
     return (
         <div
             className={`${toggleopen ? '' : 'hidden sm:flex'} h-full w-60 flex flex-col  items-center p-2 rounded-sm bg-slate-900/20`}>
             <p
-                className='p-2 font-semibold'>MenuFilters</p>
+                className='p-2 font-semibold'>FILTERS</p>
             <div
                 className=' bg-white/50 p-2 rounded-lg'>
                 <div>
