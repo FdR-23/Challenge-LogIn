@@ -14,13 +14,13 @@ const newClient = async (req, res) => {
 
         await client.save();
         res
-        .status(201)
-        .json(client);
+            .status(201)
+            .json({ message: `Successfuly Registration` ,client})
 
     } catch (error) {
         res
-        .status(401)
-        .json({message: `Error registering client`})
+            .status(401)
+            .json({ message: `Error registering client` })
     }
 }
 

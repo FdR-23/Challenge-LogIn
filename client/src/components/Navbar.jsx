@@ -1,14 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
 import { Link } from 'react-router-dom';
 
-import RegisterClient from './RegisterClient/RegisterClient';
 
-
-function Navbar() {
+const Navbar = () => {
     const navigate = useNavigate()
-
+    const data = useSelector((state) => state.token)
 
     //CLOSE SESSION
     const handleLogOut = () => {
@@ -23,9 +21,9 @@ function Navbar() {
             <p>
                 Clientes
             </p>
+            <Link to='/main/register'> ADD client</Link>
 
-            <Link  to = '/main/register'> ADD client</Link>
-         
+
 
 
             <div className="dropdown dropdown-content">
@@ -35,8 +33,7 @@ function Navbar() {
                     </div>
                 </label>
                 <ul className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
-                    <li><a >Profile</a></li>
-                    <li><a >Settings</a></li>
+                    <li><Link to={`/user/${data.dataUser._id}`}>Profile</Link></li>
                     <li><a href="#modal-Logout" >Logout</a></li>
                 </ul>
             </div>
@@ -47,7 +44,7 @@ function Navbar() {
                 <div className="modal-box w-fit flex flex-col items-center">
                     <h3 className="font-bold text-lg">Are you sure to log out?</h3>
                     <div className="modal-action">
-                        <a href="#"
+                        <a href="/#"
                             className="btn bg-indigo-600 hover:bg-red-600 btn-sm w-20">Cancel</a>
                         <button href='#' onClick={() => handleLogOut()}
                             className="btn bg-indigo-600 hover:bg-green-600 btn-sm w-20">Logout</button>

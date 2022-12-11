@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import ValidateRegister from './ValidateRegisterClient.js'
 import axios from "axios";
-import { useNavigate, useParams } from 'react-router-dom';
-
-import { useSelector } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { statusSession } from '../../redux/actions/index.js';
-
+import { registerClient, updateRegisterClient } from '../../redux/actions/index.js';
 
 function RegisterClient() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const params = useParams();
-    const clients = useSelector((state) => state.clients)
+    const clients = useSelector((state) => state.clients);
+    const data = useSelector(state => state.token)
 
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState({});
@@ -21,37 +22,34 @@ function RegisterClient() {
         gender: '',
     });
 
-
     useEffect(() => {
-        const loggerUserJSON = window.localStorage.getItem("Token");
-        const session = async (loggerUserJSON) => {
-            if (loggerUserJSON === null) {
-                return navigate('*')
-            } else {
-                const { token } = JSON.parse(loggerUserJSON)
+        if (!data) {
+            return navigate('*')
+        } else {
+            const session = async (token) => {
                 const data = await statusSession(token)
                 if (data) {
                     if (data.status === 200) {
-                        return setLoading(false)
+                        setLoading(false)
                     } else if (data.status === 404 | 401) {
-                        console.log(data)
                         alert("Error: " + data.status + " " + data.data.message)
                         navigate('*')
                     }
                 } else {
-                    navigate('*')
+                    return navigate('*')
                 }
             }
+            session(data.token)
         }
-        session(loggerUserJSON)
-    }, [navigate])
+    }, [navigate, data]);
 
-
+    //find to update Client
     useEffect(() => {
         if (params.id) {
             setInput(clients.find(element => element._id === params.id))
         }
     }, [params.id, clients]);
+
 
 
     const handleChange = (e) => {
@@ -78,46 +76,39 @@ function RegisterClient() {
         }))
     }
 
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const loggerUserJSON = window.localStorage.getItem("Token");
-        const { token } = JSON.parse(loggerUserJSON)
         if (Object.keys(errors).length !== 0) {
             alert('There are still errors, " Please try again "')
         }
         if (params.id) {
-            const clientModified = await Update(params.id, input, token)
-            if (clientModified.status === 201) {
-                alert('Successfuly Modified')
-                navigate("/main")
-            } else if (clientModified.status === 403 | 401) {
-                alert("Error: " + clientModified.status + " " + clientModified.data.message)
-            }
+            // const clientModified = await Update(params.id, input, data.token)
+            // if (clientModified.status === 201) {
+            //     alert('Successfuly Modified')
+            //     navigate("/main")
+            // } else if (clientModified.status === 403 | 401) {
+            //     alert("Error: " + clientModified.status + " " + clientModified.data.message)
+            // }
+            dispatch(updateRegisterClient(params.id, input, data.token))
+            navigate('/main')
         }
         else {
-            const form = await Register(input, token)
-            if (form) {
-                if (form.status === 201) {
-                    alert('Successfuly Registration')
-                    navigate("/main")
-                } else if (form.status === 401) {
-                    alert('there was an error in registration, please try again.')
-                } else {
-                    alert("Error: " + form.status + " " + form.data.message)
-                }
-            }
-            console.log('form de registro', form)
+            dispatch(registerClient(input, data.token))
+            navigate('/main')
         }
     }
 
-    
+
+
     if (loading) {
         return <p>error</p>
     } else
         return (
             <div className='h-screen flex flex-row justify-center items-center'>
                 <div className="modal-box w-fit flex flex-col items-center shadow-black shadow-lg">
-                    <a href='/main' className="btn btn-sm btn-circle absolute right-2 top-2">✕</a>
+                    <Link to='/main' className="btn btn-sm btn-circle absolute right-2 top-2">✕</Link>
                     <h2 className='mx-2 p-4 text-2xl font-medium  text-center'>REGISTER CLIENT</h2>
                     <form
                         className=' p-4 m-auto items-center rounded-xl'
@@ -236,6 +227,8 @@ export const Register = async (form, token) => {
         return err.response;
     }
 };
+
+
 export const Update = async (id, form, token) => {
     const config = {
         headers: {

@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ValidateLogin from './ValidateLogin.js'
 import { logIn } from '../../redux/actions/index.js';
+import { useDispatch } from 'react-redux'
+import { userConected } from '../../redux/actions/index.js';
 
 const Login = () => {
-
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const [errors, setErrors] = useState({})
     const [input, setInput] = useState({
@@ -37,7 +39,7 @@ const Login = () => {
             const data = await logIn(input);
             if (data) {
                 if (data.status === 200) {
-                    window.localStorage.setItem("Token", JSON.stringify(data.data));
+                    dispatch(userConected(data.data))
                     navigate('/main')
                 } else if (data.status === 401) {
                     // alert("Error: " + data.status + " " + data.data.message)

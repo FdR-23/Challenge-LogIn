@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Navbar from './Navbar.jsx';
-import ListClient from './ListClient.jsx';
+import ListClient from './ListClients/ListClient.jsx';
 import MenuFilters from './MenuFilters.jsx';
 import Loading from './Loading.jsx';
-import { statusSession } from '../redux/actions';
+import { statusSession } from '../redux/actions/index.js';
+
+
 const Home = () => {
     const navigate = useNavigate()
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(true)
+    const  data  = useSelector(state => state.token)
+
+
     const handleToggle = () => {
         setOpen(!open)
     }
 
     useEffect(() => {
-        const loggerUserJSON = window.localStorage.getItem("Token");
-        if (!loggerUserJSON) {
+        if (!data) {
             return navigate('*')
         } else {
-            const session = async (loggerUserJSON) => {
-                const { token } = JSON.parse(loggerUserJSON)
+            const session = async (token) => {
                 const data = await statusSession(token)
                 if (data) {
                     if (data.status === 200) {
@@ -27,15 +31,14 @@ const Home = () => {
                     } else if (data.status === 404 | 401) {
                         alert("Error: " + data.status + " " + data.data.message)
                         navigate('*')
-                        console.log("holaaa")
                     }
                 } else {
                     return navigate('*')
                 }
             }
-            session(loggerUserJSON)
+            session(data.token)
         }
-    });
+    }, [navigate, data]);
 
 
     if (loading) {

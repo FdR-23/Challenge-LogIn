@@ -1,21 +1,29 @@
-const { findById } = require('../../model/user.js');
 const userSchema = require('../../model/user.js')
 
 const userDetails = async (req, res) => {
     const { userId } = req.params
+    try {
 
-    const findUser = await findById(userId)
+        const findUser = await userSchema.findById(userId)
 
-    if (findUser) {
+        if (findUser) {
+            const { _id, username, role } = findUser
+            const dataUser = { _id, username, role }
+            res
+                .status(200)
+                .json(dataUser)
+
+        } else {
+            res
+                .status(404)
+                .json({ message: `User not found` })
+        }
+    } catch (error) {
         res
             .status(404)
-            .json(findUser)
-
-    } else {
-        res
-            .status(404)
-            .json({ message: `User not found` })
+            .json({ message: 'User not found' })
     }
+
 }
 
 

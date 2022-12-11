@@ -2,7 +2,11 @@ import React from 'react'
 
 function Loading() {
     return (
-        <div>asdas</div>
+        <div>
+
+            <h1 className='text-9xl'> cargando</h1>
+
+        </div>
     )
 }
 

@@ -1,30 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
-
-import axios from "axios";
+import React, { useEffect } from 'react'
 import ClientItem from './ClientItem';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { getAllClient } from '../redux/actions';
+import { getAllClient } from '../../redux/actions';
 
 
 function ListClient() {
     const dispatch = useDispatch()
     const clients = useSelector((state) => state.clients)
+    const data = useSelector((state) => state.token)
 
-
-
-    
     useEffect(() => {
-        const loggerUserJSON = window.localStorage.getItem("Token");
-        if (loggerUserJSON !== null) {
-            const { token } = JSON.parse(loggerUserJSON)
-            dispatch(getAllClient(token))
-        } else {
+        if (!data) {
             return alert('Error to laod clients')
+        } else {
+            dispatch(getAllClient(data.token))
         }
-    }, []);
-
+    }, [dispatch, data]);
 
     return (
         <div className='bg-slate-900/10 rounded-sm w-full h-full  '>
@@ -48,22 +39,4 @@ function ListClient() {
 
 export default ListClient
 
-
-
-//mover a redux
-export const getAllUser = async (token) => {
-    const config = {
-        headers: {
-            'access-token': `${token}`,
-        },
-    };
-    try {
-        const response = await axios.get("http://localhost:3004/client", config)
-            .then(resp => resp.data)
-        return response
-
-    } catch (err) {
-        return console.log(config);
-    }
-};
 

@@ -15,11 +15,11 @@ const signUp = async (req, res) => {
         })
         const foundEmail = await userSchema.findOne({ email: email })
         if (foundEmail) {
-          return  res
+            return res
                 .status(400)
                 .json({ message: 'E-mail already registered' })
         }
-        
+
         if (!role) {
             const foundRole = await roleSchema.findOne({ name: 'user' })
             newUser.role = foundRole.name
@@ -65,12 +65,14 @@ const logIn = async (req, res) => {
                 .status(401)
                 .json({ message: 'Invalid password' })
         }
+        const { _id } = userFound;
+        const dataUser = { _id }
         const token = jwt.sign({ id: userFound._id }, JWTSECRET, {
             expiresIn: 86400 //24 hours
         })
         res
             .status(200)
-            .json({ token })
+            .json({ token, dataUser })
     } catch (error) {
         res
             .status(500)
