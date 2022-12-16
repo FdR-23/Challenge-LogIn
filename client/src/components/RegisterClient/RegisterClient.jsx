@@ -47,6 +47,7 @@ function RegisterClient() {
     useEffect(() => {
         if (params.id) {
             setInput(clients.find(element => element._id === params.id))
+        } else {
         }
     }, [params.id, clients]);
 
@@ -95,13 +96,12 @@ function RegisterClient() {
                 navigate('/main')
             }
             else {
-                
+
                 dispatch(registerClient(input, data.token))
                 navigate('/main')
             }
         }
     }
-    console.log(input)
 
     if (loading) {
         return <Loading />

@@ -42,7 +42,7 @@ const UserDetails = () => {
                         <div className=' m-auto  flex flex-col justify-center items-center rounded-xl'>
                             <h3 className='p-2 text-2xl font-semibold  text-center '>Username
                                 <p className='text-xl font-medium  text-center '>
-                                    {info && info.data.username}
+                                    {info && info.data.username.charAt(0).toUpperCase() + info.data.username.slice(1)}
                                 </p></h3>
                             <img
                                 className=" rounded-full bg-black flex justify-center items-center overflow-hidden"
@@ -56,7 +56,9 @@ const UserDetails = () => {
                                 </p></h3>
 
                             <h3 className='p-2 text-2xl font-semibold  text-center'>Role
-                                <p className='text-xl font-medium  text-center uppercase'>
+                                <p className={`${info && info.data.role === "admin" ?
+                                    "text-xl font-medium  text-center uppercase text-yellow-500"
+                                    : "text-xl font-medium  text-center uppercase"}`}>
                                     "{info && info.data.role}"
                                 </p></h3>
 
