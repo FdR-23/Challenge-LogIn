@@ -20,7 +20,7 @@ const ClientItem = ({ client }) => {
         <div className='grid grid-cols-8 gap-1 my-2 mx-2 bg-stone-50/50 p-1 rounded-sm'>
             <div className='flex items-center justify-center text-2xl text-slate-800'>#</div>
             <div className='flex items-center justify-center text-sm font-semibold col-span-2'>{name.charAt(0).toUpperCase() + name.slice(1)}</div>
-            <div className='flex items-center justify-center text-sm font-semibold'>{lastName.charAt(0).toUpperCase() + name.slice(1)}</div>
+            <div className='flex items-center justify-center text-sm font-semibold'>{lastName.charAt(0).toUpperCase() + lastName.slice(1)}</div>
             <div className='flex items-center justify-center text-sm font-semibold'>{age}</div>
             <div className='flex items-center justify-center text-sm font-semibold'>{gender}</div>
 
