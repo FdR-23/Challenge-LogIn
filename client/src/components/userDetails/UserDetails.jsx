@@ -57,7 +57,7 @@ const UserDetails = () => {
 
                             <h3 className='p-2 text-2xl font-semibold  text-center'>Role
                                 <p className={`${info && info.data.role === "admin" ?
-                                    "text-xl font-medium  text-center uppercase text-yellow-500"
+                                    "text-xl font-medium  text-center uppercase text-yellow-800"
                                     : "text-xl font-medium  text-center uppercase"}`}>
                                     "{info && info.data.role}"
                                 </p></h3>
