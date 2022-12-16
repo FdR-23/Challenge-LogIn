@@ -10,9 +10,9 @@ const { createRoles, createAdmin } = require('../src/lib/initialSetup.js')
 
 //Initialitation
 const app = express()
+require('./db.js')
 createRoles();
 createAdmin();
-require('./db.js')
 
 //metodo para entender los obj json
 app.use(express.json())
