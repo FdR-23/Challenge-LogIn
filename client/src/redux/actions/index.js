@@ -8,6 +8,10 @@ export const TYPE = {
     REGISTER_CLIENT: "REGISTER_CLIENT",
     DELETE_CLIENT: "DELETE_CLIENT",
     UPDATE_CLIENT: "UPDATE_CLIENT",
+    GET_CLIENT_NAME: "GET_CLIENT_NAME",
+    SEARCH_RANGE_AGRE: "SEARCH_RANGE_AGE",
+    ORDER_ASC_DES: "ORDER_ASC_DES"
+
 };
 
 //Login sesion
@@ -93,7 +97,6 @@ export const LogOut = async (token) => {
 };
 
 
-
 //Register User
 export const registerUser = async (form) => {
     try {
@@ -137,15 +140,16 @@ export const deletUser = (token, id) => async (dispatch) => {
         },
     };
     try {
-        const response = await axios.delete(`http://localhost:3004/client/${id}`, config)
+        const response = await axios.delete(`http://localhost:3004/client/${id}`,
+            config)
         const { status, data } = response
         return dispatch(
             getAllClient(token),
             alert(`Status: ${status}, ${data.message} `),
-            // {
-            //     type: TYPE.DELETE_CLIENT,
-            //     payload: response,
-            // },
+            //  {
+            //      type: TYPE.DELETE_CLIENT,
+            //      payload: response,
+            //  },
         )
     } catch (err) {
         const { status, data } = err.response
@@ -183,7 +187,7 @@ export const registerClient = (form, token) => async (dispatch) => {
     }
 };
 
-//UPdate CLIENT
+//Update CLIENT
 export const updateRegisterClient = (id, form, token) => async (dispatch) => {
     const config = {
         headers: {
@@ -206,3 +210,50 @@ export const updateRegisterClient = (id, form, token) => async (dispatch) => {
         })
     }
 };
+
+//Search Client by Name
+export const getByNameClient = (name) => async (dispatch) => {
+
+    try {
+        const response = await axios.get(`http://localhost:3004/client_name?name=${name}`);
+        return dispatch({
+            type: TYPE.GET_CLIENT_NAME,
+            payload: response.data
+        })
+    } catch (error) {
+        alert(`Status ${error.response.status} , ${error.response.data.message}`)
+    }
+}
+
+//Search By Range Age
+export const searchRangeAge = (data, arr) => (dispatch) => {
+    const { to, from } = data;
+    const filterAge = arr.filter((client) => { return client.age >= to && client.age <= from })
+
+    return dispatch({
+        type: TYPE.SEARCH_RANGE_AGRE,
+        payload: [...filterAge]
+    })
+}
+
+//Order By ASC DES
+export const orderByAscDes = (data, arr) => (dispatch) => {
+
+    const filterOrder = data === "ASC" ?
+        arr.sort((a, b) => {
+            if (a.name < b.name) return -1
+            if (a.name > b.name) return 1
+            else return 0
+        }) : arr.sort((a, b) => {
+            if (a.name < b.name) return 1
+            if (a.name > b.name) return -1
+            else return 0
+        })
+
+
+    return dispatch({
+        type: TYPE.ORDER_ASC_DES,
+        payload: [...filterOrder]
+
+    })
+}

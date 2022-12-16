@@ -19,14 +19,14 @@ function ListClient() {
 
     return (
         <div className='bg-slate-900/10 rounded-sm w-full h-full  '>
-            <div className='grid grid-cols-8 border-b-2 mx-2 pt-2 border-stone-700 text-center font-semibold text-sm'>
-                <p className="mb-1"># </p>
-                <p className="mb-1 col-span-2">Name</p>
-                <p className="mb-1">Last Name</p>
-                <p className="mb-1">Age</p>
-                <p className="mb-1">Gender</p>
-                <p className="mb-1">Edit</p>
-                <p className="mb-1">Remove</p></div>
+            <div className='grid grid-cols-8 border-b-2 mx-2 pt-2 border-stone-700 bg-w text-center font-semibold text-sm items-center'>
+                <p className="mb-1 text-white text-2xl "># </p>
+                <p className="mb-1 col-span-2 text-white text-sm sm:text-lg">Name</p>
+                <p className="mb-1 text-white text-sm sm:text-lg">Last Name</p>
+                <p className="mb-1 text-white text-sm sm:text-lg">Age</p>
+                <p className="mb-1 text-white text-sm sm:text-lg">Gender</p>
+                <p className="mb-1 text-white text-sm sm:text-lg">Edit</p>
+                <p className="mb-1 text-white text-sm sm:text-lg">Remove</p></div>
 
             {clients && clients.map((element) =>
                 <ClientItem

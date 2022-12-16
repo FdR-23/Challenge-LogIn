@@ -5,8 +5,8 @@ const newClient = async (req, res) => {
 
     try {
         const client = clientSchema({
-            name: name.trim().charAt(0).toUpperCase() + name.slice(1),
-            lastName: lastName.trim().charAt(0).toUpperCase() + lastName.slice(1),
+            name: name.trim().toLowerCase(),
+            lastName: lastName.trim().toLowerCase(),
             age: age.trim(),
             gender,
             addres
@@ -15,7 +15,7 @@ const newClient = async (req, res) => {
         await client.save();
         res
             .status(201)
-            .json({ message: `Successfuly Registration` ,client})
+            .json({ message: `Successfuly Registration`, client })
 
     } catch (error) {
         res

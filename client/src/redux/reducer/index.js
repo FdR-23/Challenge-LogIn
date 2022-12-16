@@ -8,6 +8,7 @@ const token = JSON.parse(localStorageCart)
 
 const initialState = {
     clients: [],
+    clientsCopy: [],
     token: token ? token : null,
     detailsUser: null,
 }
@@ -18,6 +19,7 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 clients: action.payload,
+                clientsCopy: action.paylaod,
             }
         case TYPE.USER_CONECTED:
             return {
@@ -53,6 +55,21 @@ function rootReducer(state = initialState, action) {
                 return alert(action.payload.data.message)
             } else {
                 return alert(action.payload.data.message)
+            }
+        case TYPE.GET_CLIENT_NAME:
+            return {
+                ...state,
+                clients: action.payload,
+            }
+        case TYPE.ORDER_ASC_DES:
+            return {
+                ...state,
+                clients: action.payload,
+            }
+        case TYPE.SEARCH_RANGE_AGRE:
+            return {
+                ...state,
+                clients: action.payload,
             }
 
 

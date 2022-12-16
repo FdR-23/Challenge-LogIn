@@ -14,6 +14,7 @@ router.post('/', newClient)
 
 router.get('/', allClient)
 
+
 router.put('/:clientId',isAdmin, modClient)
 
 router.delete('/:clientId',isAdmin, deletClient)

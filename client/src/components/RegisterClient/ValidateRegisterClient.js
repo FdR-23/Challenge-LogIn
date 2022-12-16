@@ -38,9 +38,11 @@ const validateForm = (input) => {
 
     //USERNAME OR AGE CLIENT
     if (!input.age) {
-        error.age = 'Username or E-mail is required'
+        error.age = 'Age is required'
     } else if (!ExpresionNumber.test(input.age)) {
         error.age = 'Only numbers'
+    }else if (Number(input.age) > 150) {
+        error.age = 'Age max 150'
     }
 
     //USERNAME OR GENDER CLIENT

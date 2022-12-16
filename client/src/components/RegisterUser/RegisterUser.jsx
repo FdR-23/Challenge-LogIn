@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link} from 'react-router-dom';
 import Validate from './Validate.js'
 
 import { registerUser } from '../../redux/actions/index.js';
@@ -52,7 +51,7 @@ const RegisterUser = () => {
         });
         navigate('/')
       } else {
-        return alert("Error: " + form.status + " " + form.data.message)
+        return alert(`Error: ${form.status}, ${form.data.message}`)
       }
     }
   }
@@ -60,10 +59,10 @@ const RegisterUser = () => {
 
 
   return (
-    <div className='w-screen h-screen m-auto flex flex-col justify-center items-center'>
+    <div className=' h-screen m-auto flex flex-col justify-center items-center'>
 
-      <div className='flex flex-col w-80 bg-slate-50   shadow-black shadow-lg  rounded-xl'>
-
+      <div className='flex flex-col w-80 bg-slate-50   shadow-black shadow-lg  rounded-xl relative'>
+      <Link to='/' className="btn btn-sm btn-circle absolute right-2 top-2 bg-indigo-600">✕</Link>
         <h2 className='mx-2 p-4 text-4xl font-medium  text-center'>REGISTER</h2>
         <form
           className=' p-4 m-auto items-center rounded-xl'
@@ -149,13 +148,6 @@ const RegisterUser = () => {
             type="submit">Register</button>
 
         </form>
-
-        <div className='flex justify-center p-2'>
-
-          <button
-            className="btn btn-primary btn-sm btn-active"
-            onClick={() => navigate("/")}>Cancel</button>
-        </div>
 
       </div>
     </div>

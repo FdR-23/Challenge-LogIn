@@ -57,7 +57,7 @@ const Login = () => {
         <div className='w-full h-screen  flex flex-col justify-center items-center'>
 
 
-            <div className='flex flex-col w-80 bg-slate-50   shadow-black shadow-lg  rounded-xl'>
+            <div className='flex flex-col w-80 bg-white/90   shadow-black shadow-lg  rounded-xl'>
                 <h2 className='font-medium text-4xl mx-2 p-4'>Login</h2>
 
                 <form

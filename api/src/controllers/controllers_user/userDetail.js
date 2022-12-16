@@ -7,8 +7,8 @@ const userDetails = async (req, res) => {
         const findUser = await userSchema.findById(userId)
 
         if (findUser) {
-            const { _id, username, role } = findUser
-            const dataUser = { _id, username, role }
+            const { _id, username, role, email} = findUser
+            const dataUser = { _id, username, role, email }
             res
                 .status(200)
                 .json(dataUser)

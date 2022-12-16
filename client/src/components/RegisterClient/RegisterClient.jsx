@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ValidateRegister from './ValidateRegisterClient.js'
-import axios from "axios";
+import Loading from '../Loading.jsx';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { statusSession } from '../../redux/actions/index.js';
@@ -77,38 +77,39 @@ function RegisterClient() {
     }
 
 
-
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (Object.keys(errors).length !== 0) {
             alert('There are still errors, " Please try again "')
-        }
-        if (params.id) {
-            // const clientModified = await Update(params.id, input, data.token)
-            // if (clientModified.status === 201) {
-            //     alert('Successfuly Modified')
-            //     navigate("/main")
-            // } else if (clientModified.status === 403 | 401) {
-            //     alert("Error: " + clientModified.status + " " + clientModified.data.message)
-            // }
-            dispatch(updateRegisterClient(params.id, input, data.token))
-            navigate('/main')
-        }
-        else {
-            dispatch(registerClient(input, data.token))
-            navigate('/main')
+        } else {
+            if (params.id) {
+                // const clientModified = await Update(params.id, input, data.token)
+                // if (clientModified.status === 201) {
+                //     alert('Successfuly Modified')
+                //     navigate("/main")
+                // } else if (clientModified.status === 403 | 401) {
+                //     alert("Error: " + clientModified.status + " " + clientModified.data.message)
+                // }
+
+                dispatch(updateRegisterClient(params.id, input, data.token))
+                navigate('/main')
+            }
+            else {
+                
+                dispatch(registerClient(input, data.token))
+                navigate('/main')
+            }
         }
     }
-
-
+    console.log(input)
 
     if (loading) {
-        return <p>error</p>
+        return <Loading />
     } else
         return (
             <div className='h-screen flex flex-row justify-center items-center'>
-                <div className="modal-box w-fit flex flex-col items-center shadow-black shadow-lg">
-                    <Link to='/main' className="btn btn-sm btn-circle absolute right-2 top-2">✕</Link>
+                <div className="modal-box w-fit flex flex-col items-center shadow-black shadow-lg bg-white/80">
+                    <Link to='/main' className="btn btn-sm btn-circle absolute right-2 top-2 bg-indigo-600">✕</Link>
                     <h2 className='mx-2 p-4 text-2xl font-medium  text-center'>REGISTER CLIENT</h2>
                     <form
                         className=' p-4 m-auto items-center rounded-xl'
@@ -121,7 +122,7 @@ function RegisterClient() {
                                 type="text"
                                 name='name'
                                 value={input.name}
-                                placeholder='Name'
+                                placeholder='First Name'
                                 onChange={(e) => handleChange(e)}
                                 required
                                 autoFocus />
@@ -189,7 +190,6 @@ function RegisterClient() {
 
 
                         <button
-                            href="#"
                             className={Object.keys(errors).length !== 0 ?
                                 'btn btn-wide bg-red-700 hover:bg-red-600' :
                                 'btn btn-wide bg-green-500 hover:bg-green-600'}
@@ -206,42 +206,3 @@ function RegisterClient() {
 
 
 export default RegisterClient
-
-
-
-//mover a redux esto 
-export const Register = async (form, token) => {
-    const config = {
-        headers: {
-            'access-token': `${token}`,
-        },
-    };
-    try {
-        const response = await axios.post(
-            "http://localhost:3004/client",
-            form, config
-        );
-        return response;
-
-    } catch (err) {
-        return err.response;
-    }
-};
-
-
-export const Update = async (id, form, token) => {
-    const config = {
-        headers: {
-            'access-token': `${token}`,
-        },
-    };
-    try {
-        const response = await axios.put(
-            `http://localhost:3004/client/${id}`,
-            form, config
-        );
-        return response;
-    } catch (err) {
-        return err.response;
-    }
-};
