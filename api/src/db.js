@@ -3,9 +3,9 @@ require("dotenv").config();
 const mongoose = require('mongoose');
 
 
-const URI = process.env.URI;
+const {URI, MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT  }= process.env;
 
-mongoose.connect(URI, (error) => {
+mongoose.connect(URI || `mongodb://${{ MONGOUSER }}:${{ MONGOPASSWORD }}@${{ MONGOHOST }}:${{ MONGOPORT }}`, (error) => {
     if (error) {
         console.error(error)
     }else
