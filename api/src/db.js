@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const {URI, MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT  }= process.env;
 
-mongoose.connect(URI || `mongodb://${{ MONGOUSER }}:${{ MONGOPASSWORD }}@${{ MONGOHOST }}:${{ MONGOPORT }}`, (error) => {
+mongoose.connect(URI || `mongodb://${ MONGOUSER }:${ MONGOPASSWORD }@${ MONGOHOST }:${ MONGOPORT }`, (error) => {
     if (error) {
         console.error(error)
     }else
