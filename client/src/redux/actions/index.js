@@ -18,7 +18,7 @@ export const TYPE = {
 export const logIn = async (credentials) => {
     try {
         const response = await axios.post(
-            "http://localhost:3004/login",
+            "/login",
             credentials
         );
         return response;
@@ -45,7 +45,7 @@ export const statusSession = async (token) => {
         },
     };
     try {
-        const response = await axios.get("http://localhost:3004/login", config);
+        const response = await axios.get("/login", config);
         return response;
     } catch (err) {
         return err.response;
@@ -57,7 +57,7 @@ export const statusSession = async (token) => {
 export const userDetails = (id) => async (dispatch) => {
     try {
         const response = await axios.get(
-            `http://localhost:3004/user/${id}`,
+            `/user/${id}`,
         );
 
         return dispatch({
@@ -89,7 +89,7 @@ export const LogOut = async (token) => {
         },
     };
     try {
-        const response = await axios.get("http://localhost:3004/login", config);
+        const response = await axios.get("/login", config);
         return response;
     } catch (err) {
         return err.response;
@@ -101,7 +101,7 @@ export const LogOut = async (token) => {
 export const registerUser = async (form) => {
     try {
         const response = await axios.post(
-            "http://localhost:3004/signup",
+            "/signup",
             form
         );
         return response;
@@ -119,7 +119,7 @@ export const getAllClient = (token) => async (dispatch) => {
         },
     };
     try {
-        const response = await axios.get("http://localhost:3004/client", config)
+        const response = await axios.get("/client", config)
             .then(resp => resp.data)
         return dispatch({
             type: TYPE.GET_ALL_CLIENT,
@@ -140,7 +140,7 @@ export const deletUser = (token, id) => async (dispatch) => {
         },
     };
     try {
-        const response = await axios.delete(`http://localhost:3004/client/${id}`,
+        const response = await axios.delete(`/client/${id}`,
             config)
         const { status, data } = response
         return dispatch(
@@ -171,7 +171,7 @@ export const registerClient = (form, token) => async (dispatch) => {
     };
     try {
         const response = await axios.post(
-            "http://localhost:3004/client",
+            "/client",
             form, config
         );
 
@@ -196,7 +196,7 @@ export const updateRegisterClient = (id, form, token) => async (dispatch) => {
     };
     try {
         const response = await axios.put(
-            `http://localhost:3004/client/${id}`,
+            `/client/${id}`,
             form, config
         );
         return dispatch({
@@ -215,7 +215,7 @@ export const updateRegisterClient = (id, form, token) => async (dispatch) => {
 export const getByNameClient = (name) => async (dispatch) => {
 
     try {
-        const response = await axios.get(`http://localhost:3004/client_name?name=${name}`);
+        const response = await axios.get(`/client_name?name=${name}`);
         return dispatch({
             type: TYPE.GET_CLIENT_NAME,
             payload: response.data
