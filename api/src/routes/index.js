@@ -24,6 +24,7 @@ router.post('/login', authCtrl.logIn)
 //Status Login
 router.get('/login', verySession)
 
+//User Detail
 router.get('/user/:userId', userDetails)
 
 
