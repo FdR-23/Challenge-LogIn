@@ -1,12 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
+import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './redux/store/store.js'
 import { Provider } from 'react-redux'
-import dotenv from 'dotenv'
-dotenv.config()
+import axios from 'axios';
+
+
+console.log(process.env.REACT_APP_API)
 
 axios.defaults.baseURL = process.env.REACT_APP_API || "https://challenge-login-negoziac-production.up.railway.app/";
 
