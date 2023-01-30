@@ -10,14 +10,15 @@ import axios from 'axios';
 
 console.log(process.env.REACT_APP_API)
 
-axios.defaults.baseURL = process.env.REACT_APP_API || "https://challenge-login-negoziac-production.up.railway.app/";
+//axios.defaults.baseURL = process.env.REACT_APP_API || "https://challenge-login-negoziac-production.up.railway.app/";
 
+axios.defaults.baseURL = process.env.REACT_APP_API || "https://challenge-login-backend.onrender.com/"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
- // <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>,
+  // <React.StrictMode>
+  <Provider store={store}>
+    <App />
+  </Provider>,
 
   //</React.StrictMode>
 );
